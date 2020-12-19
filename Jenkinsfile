@@ -9,11 +9,13 @@ pipeline {
 
                     if( params.buildtool == 'gradle') {
                         def ejecucion = load 'gradle.groovy'
+                        ejecucion.call()
                     } else {
                         def ejecucion = load 'maven.groovy'
+                        ejecucion.call()
                     }
 
-                    ejecucion.call()
+                    
                 }
             }
         }

@@ -10,7 +10,13 @@ pipeline {
             steps {
                 script {
                     println "buildtool: " + params.buildtool
-                    def ejecucion = (params.buildtool == 'gradle') ? "${load 'gradle.groovy'}" : "${load 'maven.groovy'}"
+                    def ejecucion = ''
+                    if (params.buildtool == 'gradle') {
+                        ejecucion = load 'gradle.groovy'
+                    } else {
+                        ejecucion = load 'maven.groovy'
+                    }
+                    
                     ejecucion.call()
                 }
             }

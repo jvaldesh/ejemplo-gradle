@@ -3,19 +3,16 @@ pipeline {
 
     stages {
         stage('Pipeline') {
+            environment {
+                LAST_STAGE_NAME = ''
+            }
+            
             steps {
                 script {
                     println "buildtool: " + params.buildtool
-
-                    if( params.buildtool == 'gradle') {
-                        def ejecucion = load 'gradle.groovy'
-                        ejecucion.call()
-                    } else {
-                        def ejecucion = load 'maven.groovy'
-                        ejecucion.call()
-                    }
-
-                    
+                    env.
+                    def ejecucion = params.buildtool == 'gradle' ? "${load 'gradle.groovy'}" : "${load 'maven.groovy'}"
+                    ejecucion.call()
                 }
             }
         }
@@ -27,7 +24,7 @@ pipeline {
         }
 
         failure {
-            slackSend color: 'danger', message: "[Julio Valdés][${env.JOB_NAME}][${params.buildtool}] Ejecución fallida en stage ${env.STAGE_NAME}"
+            slackSend color: 'danger', message: "[Julio Valdés][${env.JOB_NAME}][${params.buildtool}] Ejecución fallida en stage ${env.LAST_STAGE_NAME}"
         }
     }
 }
